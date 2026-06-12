@@ -16,6 +16,7 @@
             line-height: 1.6;
             background-color: #1e2937;
             color: #e2e8f0;
+            transition: background-color 0.4s, color 0.4s; /* 🎬 動態細節：讓切換顏色時有柔和的漸變效果，不會太刺眼 */
         }
         
         header {
@@ -65,7 +66,7 @@
             border-radius: 12px;
             width: 300px;
             overflow: hidden;
-            transition: transform 0.3s;
+            transition: transform 0.3s, background-color 0.4s;
         }
         
         .work-card:hover {
@@ -93,6 +94,7 @@
             border: none;
             border-radius: 50px;
             cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
         }
         
         button:hover {
@@ -101,35 +103,56 @@
         button:active {
             transform: scale(0.95);
         }
-        /* 📱 當螢幕寬度小於或等於 768 像素（通常是手機和平板）時，執行以下設定 */
+
+        /* ☀️ 亮色模式（Light Mode）皮膚設定 */
+        body.light-mode {
+            background-color: #f8fafc; /* 背景變成明亮的灰白色 */
+            color: #0f172a; /* 文字變成深色 */
+        }
+
+        body.light-mode .work-card {
+            background-color: #ffffff; /* 卡片變成白色 */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); /* 亮色底用淡陰影 */
+        }
+        
+        body.light-mode button {
+            background-color: #0f172a; /* 亮色底時，大按鈕變成帥氣的深黑色 */
+            color: white;
+        }
+
+        body.light-mode button:hover {
+            background-color: #334155;
+        }
+
+        /* 📱 當螢幕寬度小於或等於 768 像素時的手機 RWD 設定 */
         @media (max-width: 768px) {
             header {
-                padding: 50px 15px 40px; /* 手機螢幕小，縮減頂部的留白，才不會佔據太多空間 */
+                padding: 50px 15px 40px;
             }
 
             h1 {
-                font-size: 2rem; /* 主標題字體從 2.8rem 縮小到 2rem，避免換行變得很醜 */
+                font-size: 2rem;
             }
 
             .subtitle {
-                font-size: 1.1rem; /* 副標題也同步縮小一點 */
+                font-size: 1.1rem;
             }
 
             .container {
-                padding: 20px 15px; /* 縮減主容器的左右留白，爭取更多顯示空間 */
+                padding: 20px 15px;
             }
 
             h2 {
-                font-size: 1.6rem; /* 「關於我」等標題也縮小 */
+                font-size: 1.6rem;
             }
 
             .work-card {
-                width: 100%; /* 關鍵！在手機上，卡片寬度不再固定 300px，而是直接填滿手機寬度（100%） */
-                max-width: 340px; /* 限制最大寬度，避免在某些大手機上卡片被拉得太肥 */
+                width: 100%;
+                max-width: 340px;
             }
             
-            button {
-                width: 80%; /* 讓底部的按鈕在手機上變大、更好用手指點擊 */
+            #load-btn {
+                width: 80%;
                 font-size: 16px;
                 white-space: nowrap;
             }
@@ -137,6 +160,11 @@
     </style>
 </head>
 <body>
+    <!-- 頂部主題切換按鈕區塊 -->
+    <div style="text-align: right; padding: 15px 20px; max-width: 1000px; margin: 0 auto;">
+        <button id="theme-btn" onclick="toggleTheme()" style="margin: 0; padding: 8px 18px; font-size: 14px;">☀️ 變亮色</button>
+    </div>
+
     <header>
         <h1>🎬 30歲導演 × 未來前端工程師</h1>
         <p class="subtitle">從影視故事 到 數位體驗</p>
@@ -170,11 +198,10 @@
         </section>
     </div>
 
-    <!-- 修正點 1：清乾淨了重複的 </button> -->
     <button onclick="showMoreWorks()" id="load-btn">看更多作品</button>
 
-    <!-- 這裡加入 JavaScript 劇本 -->
     <script>
+        // 🎬 1. 看更多作品的功能
         function showMoreWorks() {
             const container = document.getElementById('works-container');
             
@@ -193,7 +220,22 @@
             const button = document.getElementById('load-btn');
             button.style.display = 'none';
         }
+
+        // 🎬 2. 主題切換的導戲開關
+        function toggleTheme() {
+            const body = document.body;
+            const themeBtn = document.getElementById('theme-btn');
+            
+            // 彈性切換標籤
+            body.classList.toggle('light-mode');
+            
+            // 判斷當下狀態，優雅更改按鈕文字與圖示
+            if (body.classList.contains('light-mode')) {
+                themeBtn.innerText = "🌙 變深色";
+            } else {
+                themeBtn.innerText = "☀️ 變亮色";
+            }
+        }
     </script>
-<!-- 修正點 2 & 3：嚴格遵守一對一結尾，絕不重複 -->
 </body>
 </html>
