@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>李導演 | 影視作品集</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #1e2937;
+            color: #e2e8f0;
+        }
+        
+        header {
+            text-align: center;
+            padding: 80px 20px 60px;
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        section {
+            margin-bottom: 60px;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 25px;
+            text-align: center;
+            background: linear-gradient(to right, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .works {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+        }
+        
+        .work-card {
+            background-color: #334155;
+            border-radius: 12px;
+            width: 300px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .work-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .work-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .work-info {
+            padding: 20px;
+        }
+        
+        button {
+            display: block;
+            margin: 30px auto;
+            padding: 14px 32px;
+            font-size: 18px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #2563eb;
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+        /* 📱 當螢幕寬度小於或等於 768 像素（通常是手機和平板）時，執行以下設定 */
+        @media (max-width: 768px) {
+            header {
+                padding: 50px 15px 40px; /* 手機螢幕小，縮減頂部的留白，才不會佔據太多空間 */
+            }
+
+            h1 {
+                font-size: 2rem; /* 主標題字體從 2.8rem 縮小到 2rem，避免換行變得很醜 */
+            }
+
+            .subtitle {
+                font-size: 1.1rem; /* 副標題也同步縮小一點 */
+            }
+
+            .container {
+                padding: 20px 15px; /* 縮減主容器的左右留白，爭取更多顯示空間 */
+            }
+
+            h2 {
+                font-size: 1.6rem; /* 「關於我」等標題也縮小 */
+            }
+
+            .work-card {
+                width: 100%; /* 關鍵！在手機上，卡片寬度不再固定 300px，而是直接填滿手機寬度（100%） */
+                max-width: 340px; /* 限制最大寬度，避免在某些大手機上卡片被拉得太肥 */
+            }
+            
+            button {
+                width: 80%; /* 讓底部的按鈕在手機上變大、更好用手指點擊 */
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🎬 30歲導演 × 未來前端工程師</h1>
+        <p class="subtitle">從影視故事 到 數位體驗</p>
+    </header>
+
+    <div class="container">
+        <section>
+            <h2>關於我</h2>
+            <p>我是李導演，曾擔任影視導演與編劇。代表作品包括《情繫煙火夢》、《蜜瓜》、《接財神》。現在我正在學習前端開發，希望將故事敘事能力結合到數位產品中。</p>
+        </section>
+
+        <section>
+            <h2>代表作品</h2>
+            <div class="works" id="works-container">
+                <div class="work-card">
+                    <img src="https://via.placeholder.com/300x180?text=情繫煙火夢" alt="情繫煙火夢">
+                    <div class="work-info">
+                        <h3>情繫煙火夢</h3>
+                        <p>2022 劇情短片</p>
+                    </div>
+                </div>
+                
+                <div class="work-card">
+                    <img src="https://via.placeholder.com/300x180?text=蜜瓜" alt="蜜瓜">
+                    <div class="work-info">
+                        <h3>蜜瓜</h3>
+                        <p>2023 喜劇</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 修正點 1：清乾淨了重複的 </button> -->
+    <button onclick="showMoreWorks()" id="load-btn">看更多作品</button>
+
+    <!-- 這裡加入 JavaScript 劇本 -->
+    <script>
+        function showMoreWorks() {
+            const container = document.getElementById('works-container');
+            
+            const newCardHTML = `
+                <div class="work-card">
+                    <img src="https://via.placeholder.com/300x180?text=接財神" alt="接財神">
+                    <div class="work-info">
+                        <h3>接財神</h3>
+                        <p>2024 賀歲喜劇</p>
+                    </div>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', newCardHTML);
+            
+            const button = document.getElementById('load-btn');
+            button.style.display = 'none';
+        }
+    </script>
+<!-- 修正點 2 & 3：嚴格遵守一對一結尾，絕不重複 -->
+</body>
+</html>
