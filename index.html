@@ -3,239 +3,542 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>李導演 | 影視作品集</title>
+    <title>李世杰的影片作品集</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+TC:wght@300;400;700&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            background-color: #1e2937;
-            color: #e2e8f0;
-            transition: background-color 0.4s, color 0.4s; /* 🎬 動態細節：讓切換顏色時有柔和的漸變效果，不會太刺眼 */
+            font-family: 'Noto Sans TC', sans-serif;
+            background: #0a0a0f;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
         }
-        
+
+        /* 電影感背景 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(0, 255, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(255, 0, 128, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.5) 0%, #0a0a0f 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* 電影掃描線 */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15) 0px,
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 9999;
+            animation: scanline 10s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        /* 粒子背景 */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(0, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 15s infinite;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
         header {
             text-align: center;
-            padding: 80px 20px 60px;
-            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            padding: 80px 20px;
+            position: relative;
+            z-index: 2;
         }
-        
+
+        .header-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.15) 0%, transparent 70%);
+            filter: blur(40px);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+        }
+
         h1 {
-            font-size: 2.8rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
             margin-bottom: 20px;
-        }
-        
-        .subtitle {
-            font-size: 1.3rem;
-            opacity: 0.9;
-        }
-        
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        
-        section {
-            margin-bottom: 60px;
-        }
-        
-        h2 {
-            font-size: 2rem;
-            margin-bottom: 25px;
-            text-align: center;
-            background: linear-gradient(to right, #60a5fa, #a78bfa);
+            position: relative;
+            display: inline-block;
+            animation: titlePulse 3s ease-in-out infinite;
+            background: linear-gradient(90deg, #00ffff, #ff0080, #00ffff);
+            background-size: 200% 100%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s linear infinite, titlePulse 3s ease-in-out infinite;
         }
-        
-        .works {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 25px;
-            justify-content: center;
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
         }
-        
-        .work-card {
-            background-color: #334155;
-            border-radius: 12px;
-            width: 300px;
+
+        @keyframes titlePulse {
+            0%, 100% { text-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 0 40px rgba(0, 255, 255, 0.3); }
+            50% { text-shadow: 0 0 30px rgba(255, 0, 128, 0.5), 0 0 60px rgba(255, 0, 128, 0.3); }
+        }
+
+        h1::before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ffff, #ff0080, #00ffff, transparent);
+            animation: linePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes linePulse {
+            0%, 100% { opacity: 0.5; width: 60%; }
+            50% { opacity: 1; width: 80%; }
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #888;
+            margin-bottom: 40px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+            position: relative;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            text-align: center;
+            position: relative;
+            color: #fff;
+            letter-spacing: 5px;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        .section-title::before,
+        .section-title::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #00ffff);
+        }
+
+        .section-title::before {
+            left: calc(50% - 200px);
+        }
+
+        .section-title::after {
+            right: calc(50% - 200px);
+            background: linear-gradient(90deg, #00ffff, transparent);
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+
+        .video-card {
+            background: linear-gradient(135deg, rgba(20, 20, 30, 0.9) 0%, rgba(10, 10, 20, 0.95) 100%);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 8px;
             overflow: hidden;
-            transition: transform 0.3s, background-color 0.4s;
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            opacity: 0;
+            transform: translateY(50px);
+            animation: cardAppear 0.8s ease-out forwards;
         }
-        
-        .work-card:hover {
-            transform: translateY(-10px) scale(1.03);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+
+        .video-card:nth-child(1) { animation-delay: 0.1s; }
+        .video-card:nth-child(2) { animation-delay: 0.2s; }
+        .video-card:nth-child(3) { animation-delay: 0.3s; }
+        .video-card:nth-child(4) { animation-delay: 0.4s; }
+        .video-card:nth-child(5) { animation-delay: 0.5s; }
+        .video-card:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes cardAppear {
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        .work-card img {
+
+        .video-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00ffff, #ff0080);
+            z-index: 10;
+        }
+
+        .video-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 40%, rgba(0, 255, 255, 0.03) 50%, transparent 60%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+            pointer-events: none;
+        }
+
+        .video-card:hover::after {
+            transform: translateX(100%);
+        }
+
+        .video-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: rgba(0, 255, 255, 0.5);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                0 0 30px rgba(0, 255, 255, 0.1),
+                inset 0 0 30px rgba(0, 255, 255, 0.05);
+        }
+
+        .video-wrapper {
+            position: relative;
             width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
-        
-        .work-info {
-            padding: 20px;
-        }
-        
-        button {
-            display: block;
-            margin: 30px auto;
-            padding: 14px 32px;
-            font-size: 18px;
-            background-color: #3b82f6;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.1s;
-        }
-        
-        button:hover {
-            background-color: #2563eb;
-        }
-        button:active {
-            transform: scale(0.95);
+            padding-top: 56.25%;
+            background: #000;
+            overflow: hidden;
         }
 
-        /* ☀️ 亮色模式（Light Mode）皮膚設定 */
-        body.light-mode {
-            background-color: #f8fafc; /* 背景變成明亮的灰白色 */
-            color: #0f172a; /* 文字變成深色 */
+        .video-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid transparent;
+            transition: border-color 0.3s;
+            z-index: 5;
+            pointer-events: none;
         }
 
-        body.light-mode .work-card {
-            background-color: #ffffff; /* 卡片變成白色 */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); /* 亮色底用淡陰影 */
-        }
-        
-        body.light-mode button {
-            background-color: #0f172a; /* 亮色底時，大按鈕變成帥氣的深黑色 */
-            color: white;
+        .video-card:hover .video-wrapper::before {
+            border-color: rgba(0, 255, 255, 0.3);
         }
 
-        body.light-mode button:hover {
-            background-color: #334155;
+        .video-wrapper video,
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
 
-        /* 📱 當螢幕寬度小於或等於 768 像素時的手機 RWD 設定 */
+        .video-info {
+            padding: 25px;
+            position: relative;
+        }
+
+        .video-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 25px;
+            width: 30px;
+            height: 2px;
+            background: linear-gradient(90deg, #00ffff, #ff0080);
+        }
+
+        .video-title {
+            font-size: 1.15rem;
+            margin-bottom: 10px;
+            color: #ffffff;
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .video-card:hover .video-title {
+            color: #00ffff;
+        }
+
+        .video-description {
+            color: #777;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            position: relative;
+        }
+
+        footer {
+            text-align: center;
+            padding: 50px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-top: 1px solid rgba(0, 255, 255, 0.1);
+            margin-top: 80px;
+            position: relative;
+            z-index: 2;
+        }
+
+        footer p {
+            color: #666;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        footer a {
+            color: #00ffff;
+            text-decoration: none;
+            transition: all 0.3s;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        footer a:hover {
+            color: #ff0080;
+            text-shadow: 0 0 15px rgba(255, 0, 128, 0.5);
+        }
+
         @media (max-width: 768px) {
-            header {
-                padding: 50px 15px 40px;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            .subtitle {
-                font-size: 1.1rem;
-            }
-
-            .container {
-                padding: 20px 15px;
-            }
-
-            h2 {
-                font-size: 1.6rem;
-            }
-
-            .work-card {
-                width: 100%;
-                max-width: 340px;
-            }
-            
-            #load-btn {
-                width: 80%;
-                font-size: 16px;
-                white-space: nowrap;
-            }
+            h1 { font-size: 2rem; }
+            .section-title { font-size: 1.8rem; }
+            .video-grid { grid-template-columns: 1fr; }
+            .subtitle { font-size: 0.9rem; }
         }
     </style>
 </head>
 <body>
-    <!-- 頂部主題切換按鈕區塊 -->
-    <div style="text-align: right; padding: 15px 20px; max-width: 1000px; margin: 0 auto;">
-        <button id="theme-btn" onclick="toggleTheme()" style="margin: 0; padding: 8px 18px; font-size: 14px;">☀️ 變亮色</button>
-    </div>
+    <!-- 粒子背景 -->
+    <div class="particles" id="particles"></div>
 
     <header>
-        <h1>🎬 30歲導演 × 未來前端工程師</h1>
-        <p class="subtitle">從影視故事 到 數位體驗</p>
+        <div class="header-glow"></div>
+        <h1>李世杰的影片作品集</h1>
+        <p class="subtitle">師從 田啟文 先生從事影視製作8年經驗，極強適應能力，能快速融入工作環境，重視團隊合作意識，能在高壓環境下保持冷靜處理工作。熟悉影視製作，由前期、中期、後期全方位參與。掌握各類型剪接軟件，具有視頻拍攝、自媒體營運、獨立剪輯製作能力。</p>
     </header>
 
     <div class="container">
-        <section>
-            <h2>關於我</h2>
-            <p>我是李導演，曾擔任影視導演與編劇。代表作品包括《情繫煙火夢》、《蜜瓜》、《接財神》。現在我正在學習前端開發，希望將故事敘事能力結合到數位產品中。</p>
-        </section>
-
-        <section>
-            <h2>代表作品</h2>
-            <div class="works" id="works-container">
-                <div class="work-card">
-                    <img src="https://via.placeholder.com/300x180?text=情繫煙火夢" alt="情繫煙火夢">
-                    <div class="work-info">
-                        <h3>情繫煙火夢</h3>
-                        <p>2022 劇情短片</p>
-                    </div>
+        <h2 class="section-title">作品集</h2>
+        
+        <div class="video-grid">
+            <!-- 影片卡片 1 - YouTube 嵌入 -->
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <iframe 
+                        src="https://www.youtube.com/embed/3c-ctabLph8" 
+                        frameborder="0" 
+                        allowfullscreen>
+                    </iframe>
                 </div>
-                
-                <div class="work-card">
-                    <img src="https://via.placeholder.com/300x180?text=蜜瓜" alt="蜜瓜">
-                    <div class="work-info">
-                        <h3>蜜瓜</h3>
-                        <p>2023 喜劇</p>
-                    </div>
+                <div class="video-info">
+                    <h3 class="video-title">導演/編劇/剪接作品《情繫煙火夢》</h3>
+                    <p class="video-description">第三屆《香港印記》短片比賽2023 冠軍/最受歡迎短片獎</p>
                 </div>
             </div>
-        </section>
+
+            <!-- 影片卡片 2 - YouTube 嵌入 -->
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <iframe 
+                        src="https://www.youtube.com/embed/YpsAwt54crk?start=134" 
+                        frameborder="0" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">導演/編劇/剪接作品《蜜瓜》 </h3>
+                    <p class="video-description">第五屆《香港印記》短片比賽2025 亞軍</p>
+                </div>
+            </div>
+
+            <!-- 影片卡片 3 - YouTube 嵌入 -->
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <iframe 
+                        src="https://www.youtube.com/embed/Y6ZvODl7ROA" 
+                        frameborder="0" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">導演/編劇/剪接作品《接財神》 </h3>
+                    <p class="video-description">畢業作品 - 獲最佳人氣短片獎 銅獎 </p>
+                </div>
+            </div>
+
+            <!-- 影片卡片 4 - YouTube 嵌入 -->
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <iframe 
+                        src="https://www.youtube.com/embed/AUX7OL25zsM" 
+                        frameborder="0" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">導演/編劇/剪接作品《成長MV》</h3>
+                    <p class="video-description">小學招生宣傳影片</p>
+                </div>
+            </div>
+
+            <!-- 影片卡片 5 - YouTube Shorts 嵌入 -->
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <iframe 
+                        src="https://www.youtube.com/embed/-Mx2HbtjEwY" 
+                        frameborder="0" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">剪接作品《我真的是個好人》</h3>
+                    <p class="video-description">兼職剪接IG Reels</p>
+                </div>
+            </div>
+
+            <!-- 影片卡片 6 - YouTube 嵌入 -->
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <iframe 
+                        src="https://www.youtube.com/embed/KaO7oydlMKg?start=433" 
+                        frameborder="0" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">導演/編劇/剪接 《靈異靈醫》</h3>
+                    <p class="video-description">過往公司經營 YouTube Channel</p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <button onclick="showMoreWorks()" id="load-btn">看更多作品</button>
+    <footer>
+        <p>© 2026 李世杰的影片作品集 | 聯絡方式：電話：9138 2305  電郵：<a href="mailto:saikit96104@gmail.com">saikit96104@gmail.com</a></p>
+    </footer>
 
     <script>
-        // 🎬 1. 看更多作品的功能
-        function showMoreWorks() {
-            const container = document.getElementById('works-container');
+        // 創建粒子效果
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 50;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (10 + Math.random() * 10) + 's';
             
-            const newCardHTML = `
-                <div class="work-card">
-                    <img src="https://via.placeholder.com/300x180?text=接財神" alt="接財神">
-                    <div class="work-info">
-                        <h3>接財神</h3>
-                        <p>2024 賀歲喜劇</p>
-                    </div>
-                </div>
-            `;
+            const colors = ['rgba(0, 255, 255, 0.5)', 'rgba(255, 0, 128, 0.5)', 'rgba(255, 255, 255, 0.3)'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.background = color;
+            particle.style.boxShadow = `0 0 10px ${color}`;
             
-            container.insertAdjacentHTML('beforeend', newCardHTML);
-            
-            const button = document.getElementById('load-btn');
-            button.style.display = 'none';
+            particlesContainer.appendChild(particle);
         }
 
-        // 🎬 2. 主題切換的導戲開關
-        function toggleTheme() {
-            const body = document.body;
-            const themeBtn = document.getElementById('theme-btn');
+        // 滑鼠跟隨發光效果
+        const headerGlow = document.querySelector('.header-glow');
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let currentX = mouseX;
+        let currentY = mouseY;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animate() {
+            currentX += (mouseX - currentX) * 0.05;
+            currentY += (mouseY - currentY) * 0.05;
             
-            // 彈性切換標籤
-            body.classList.toggle('light-mode');
+            headerGlow.style.left = currentX + 'px';
+            headerGlow.style.top = currentY + 'px';
             
-            // 判斷當下狀態，優雅更改按鈕文字與圖示
-            if (body.classList.contains('light-mode')) {
-                themeBtn.innerText = "🌙 變深色";
-            } else {
-                themeBtn.innerText = "☀️ 變亮色";
-            }
+            requestAnimationFrame(animate);
         }
+        animate();
     </script>
 </body>
 </html>
+
